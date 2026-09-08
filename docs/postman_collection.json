@@ -1,10 +1,52 @@
 {
-  "info": { "name": "CareNest API", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json" },
+  "info": {
+    "name": "CareNest API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
   "item": [
-    { "name": "Login", "request": { "method": "POST", "url": "{{baseUrl}}/api/auth/login", "body": { "mode": "raw", "raw": "{\"email\":\"admin@carenest.test\",\"password\":\"password123\"}" } } },
-    { "name": "List Patients", "request": { "method": "GET", "url": "{{baseUrl}}/api/patients" } },
-    { "name": "Start Visit", "request": { "method": "POST", "url": "{{baseUrl}}/api/visits/v_001/start" } },
-    { "name": "Create Message", "request": { "method": "POST", "url": "{{baseUrl}}/api/messages", "body": { "mode": "raw", "raw": "{\"from\":\"u_cg1\",\"to\":\"p_01\",\"body\":\"Vitals done\"}" } } }
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/auth/login",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"email\":\"admin@carenest.test\",\"password\":\"password123\"}",
+          "options": { "raw": { "language": "json" } }
+        }
+      }
+    },
+    {
+      "name": "List Patients",
+      "request": { "method": "GET", "url": "{{baseUrl}}/api/patients" }
+    },
+    {
+      "name": "Start Visit",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/visits/v_001/start",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"actor\":\"u_cg1\"}",
+          "options": { "raw": { "language": "json" } }
+        }
+      }
+    },
+    {
+      "name": "Create Message",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "url": "{{baseUrl}}/api/messages",
+        "body": {
+          "mode": "raw",
+          "raw": "{\"from\":\"u_cg1\",\"to\":\"p_01\",\"body\":\"Vitals done\"}",
+          "options": { "raw": { "language": "json" } }
+        }
+      }
+    }
   ],
   "variable": [{ "key": "baseUrl", "value": "http://localhost:4000" }]
 }
