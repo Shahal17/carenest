@@ -1,5 +1,5 @@
-const CACHE = 'carenest-v2';
-const APP_SHELL = ['/', '/manifest.webmanifest'];
+const CACHE = 'carenest-v3';
+const APP_SHELL = ['/', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png'];
 
 self.addEventListener('install', (event) => {
   event.waitUntil(caches.open(CACHE).then((cache) => cache.addAll(APP_SHELL)));
