@@ -18,7 +18,8 @@ export const MessagesScreen = () => {
 
   const send = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    const form = new FormData(event.currentTarget);
+    const formElement = event.currentTarget;
+    const form = new FormData(formElement);
     const body = String(form.get('body') ?? '').trim();
     if (!body) return;
 
@@ -35,7 +36,7 @@ export const MessagesScreen = () => {
         return;
       }
 
-      event.currentTarget.reset();
+      formElement.reset();
       setStatus('Message sent');
     } catch {
       setStatus('Cannot reach CareNest API');
