@@ -4,7 +4,6 @@ const config: CapacitorConfig = {
   appId: 'com.carenest.app',
   appName: 'CareNest',
   webDir: 'dist',
-  bundledWebRuntime: false,
   server: {
     androidScheme: 'https'
   }
