@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "dev": "concurrently \"npm:dev:api\" \"npm:dev:web\"",
     "dev:api": "tsx backend/src/server.ts",
@@ -10,7 +13,8 @@
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0 --port 4173",
     "test": "vitest run",
-    "test:e2e": "echo \"Playwright removed in this environment; run E2E in CI/device env\"",
+    "typecheck": "tsc --noEmit",
+    "check": "npm run typecheck && npm test && npm run build",
     "seed": "tsx backend/scripts/seed.ts",
     "mobile:sync": "npx cap sync",
     "mobile:android": "npx cap run android",
@@ -18,6 +22,9 @@
     "build:apk": "npm run build && npx cap add android && npx cap sync android && (cd android && ./gradlew assembleDebug)"
   },
   "dependencies": {
+    "@capacitor/android": "^7.0.1",
+    "@capacitor/core": "^7.0.1",
+    "@capacitor/ios": "^7.0.1",
     "cors": "^2.8.5",
     "dayjs": "^1.11.13",
     "express": "^4.21.1",
@@ -26,24 +33,23 @@
     "react-router-dom": "^6.30.1",
     "socket.io": "^4.8.1",
     "socket.io-client": "^4.8.1",
-    "zod": "^3.23.8",
-    "@capacitor/core": "^7.0.1",
-    "@capacitor/android": "^7.0.1",
-    "@capacitor/ios": "^7.0.1"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@capacitor/cli": "^7.0.1",
     "@testing-library/react": "^16.0.1",
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/node": "^22.9.0",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "@types/supertest": "^6.0.3",
     "@vitejs/plugin-react": "^4.3.3",
     "concurrently": "^9.0.1",
+    "supertest": "^7.0.0",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3",
     "vite": "^5.4.10",
-    "vitest": "^2.1.4",
-    "supertest": "^7.0.0",
-    "@capacitor/cli": "^7.0.1"
+    "vitest": "^2.1.4"
   }
 }

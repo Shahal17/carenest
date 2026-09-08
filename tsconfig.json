@@ -10,5 +10,11 @@
     "resolveJsonModule": true,
     "types": ["vite/client", "node"]
   },
-  "include": ["frontend/src", "backend/src", "tests", "vite.config.ts"]
+  "include": [
+    "frontend/src",
+    "backend/src",
+    "tests",
+    "vite.config.ts",
+    "capacitor.config.ts"
+  ]
 }

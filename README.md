@@ -1,48 +1,108 @@
-# CareNest — Digital Home Healthcare Platform
+# CareNest — Offline-First Home Healthcare Coordination
 
-Web-first PWA and mobile-ready care coordination platform for patients, caregivers, family contacts, and clinic admins.
+CareNest is a web-first PWA and mobile-ready prototype for coordinating home healthcare across patients, caregivers, family contacts, and clinic teams. Its core demo focuses on reliable home-visit documentation when connectivity is weak or temporarily unavailable.
 
-## Working Preview URL
-- Local preview: `http://localhost:4173` after running `npm install && npm run build && npm run preview`.
+## Core demo flow
+1. Open a patient and review the care context.
+2. Start a caregiver visit.
+3. If connectivity is unavailable, the visit is queued locally instead of being lost.
+4. When connectivity returns, queued visits sync to the API.
+5. Duplicate sync attempts are skipped safely and write operations are recorded in the audit log.
+6. Messaging and telehealth signaling demonstrate escalation paths back to the wider care team.
 
 ## Stack
-- Frontend: React + Vite (responsive/mobile-first screens)
+- Frontend: React + Vite
 - Backend: Express + Socket.IO
-- Data: Prisma schema + SQL migration + seed script
-- Realtime: Socket.IO for messaging and WebRTC signaling relay
-- PWA: `manifest.webmanifest` + `sw.js`
-
-## Implemented Steps
-1. **DB + API skeleton**: `prisma/schema.prisma`, migration SQL, API routes under `backend/src/server.ts`.
-2. **UI screens + wireframes**: Login, Patient List/Detail, Visit Calendar, Visit Workflow, Telehealth Room, Messages, Admin Dashboard.
-3. **Visit workflow + offline sync**: local queue in `VisitWorkflowScreen.tsx` and `/api/sync/visits` endpoint.
-4. **Telehealth + messaging**: WebRTC signaling socket channel + in-app messaging with Socket.IO.
-5. **Tests + seed data + preview**: unit tests (Vitest), E2E flow (Playwright), seed generation script.
-
-
-## Get CareNest as an App
-- **PWA install (recommended first):** open deployed URL and install from browser menu (Android Chrome / iOS Safari).
-- **Store-ready native app:** use Capacitor wrapper (Android/iOS) with `npm run build`, `npm run mobile:sync`, then `npm run mobile:android` or `npm run mobile:ios`.
-- Detailed steps: `docs/APP_INSTALLATION.md`.
+- Data model: Prisma schema + SQL migration artifacts + in-memory demo data
+- Realtime: Socket.IO messaging and WebRTC signaling relay scaffold
+- Mobile/PWA: service worker + web manifest + Capacitor wrapper
+- Tests: Vitest + Supertest API tests
 
 ## Run locally
+Requires Node.js 20 or newer.
+
 ```bash
 npm install
 npm run seed
 npm run dev
 ```
-- API at `http://localhost:4000`
-- Web at `http://localhost:5173`
 
-## Compliance & Security Notes
-- RBAC model for roles (patient/caregiver/family/admin) scaffolded server-side.
-- Consent capture embedded in patient model.
-- Audit logs generated for write operations.
-- TLS, AES-256 at-rest encryption, retention policy, signed attachment URLs, and 2FA/OTP are represented as integration-ready requirements for production deployment.
+- API: `http://localhost:4000`
+- Web: `http://localhost:5173`
 
-## Deliverables in repo
-- GitHub APK workflow: `.github/workflows/android-apk.yml` (download artifact `carenest-debug-apk`)
-- API docs: `docs/API.md`
+Demo login:
+- Email: `admin@carenest.test`
+- Password: `password123`
+
+You can override the demo password with the `DEMO_PASSWORD` environment variable.
+
+## Validate before a demo
+
+```bash
+npm run check
+```
+
+This runs TypeScript typechecking, API/unit tests, and the production web build.
+
+## Production-style preview
+The preview server still needs the API running.
+
+Terminal 1:
+```bash
+npm run dev:api
+```
+
+Terminal 2:
+```bash
+npm run build
+npm run preview
+```
+
+Then open `http://localhost:4173`.
+
+## Offline behavior
+After the app has been loaded online at least once, the service worker caches same-origin app assets so the interface can relaunch during a connectivity interruption. Home visits created offline are stored in a local queue and can be synchronized later. API and Socket.IO traffic are intentionally not cached.
+
+## Implemented prototype pieces
+- Patient list/detail screens
+- Visit calendar and visit lifecycle API
+- Offline visit queue + idempotent sync endpoint
+- Vitals API with validation
+- Realtime messaging scaffold
+- Telehealth signaling channel
+- Audit logging for demo write operations
+- Basic invoice generation/export
+- PWA service worker and manifest
+- Capacitor Android/iOS wrapper configuration
+- GitHub CI and Android debug APK workflows
+
+## Security and clinical-safety scope
+CareNest is a hackathon prototype, not a production clinical system.
+
+Implemented in the prototype:
+- Input validation for key API write endpoints
+- Demo credential checking
+- Consent fields in the patient model
+- Audit logging for important demo actions
+- Role fields in the domain model
+
+Not yet implemented and required before real deployment:
+- Production authentication and authorization/RBAC enforcement
+- Secure password hashing and account recovery
+- TLS termination and encrypted production storage
+- Signed attachment URLs and retention policies
+- 2FA/OTP
+- Clinical validation, regulatory review, and real-world safety testing
+- Production database persistence
+
+CareNest does not make diagnoses. Any future risk-detection or AI component should be treated as clinician-reviewed decision support until clinically validated.
+
+## Android debug APK
+The workflow `.github/workflows/android-apk.yml` builds and uploads a `carenest-debug-apk` artifact. The APK contains the web application shell; a real mobile deployment must be configured to reach a deployed backend rather than relying on the local Vite proxy.
+
+## Repository notes
+- API reference: `docs/API.md`
 - Postman collection: `docs/postman_collection.json`
-- Migration files: `prisma/migrations/...`
-- Seed script/data: `backend/scripts/seed.ts` (+ generated `seed-output.json` when run)
+- Migration artifacts: `prisma/migrations/...`
+- Seed script: `backend/scripts/seed.ts`
+- `ml-code-sample/` is a standalone learning/code sample and is **not part of the CareNest runtime or clinical workflow**.
