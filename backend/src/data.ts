@@ -44,11 +44,17 @@ export const patients: Patient[] = [
 
 export const visits: Visit[] = [
   {
-    id: 'v_001', patientId: 'pt_01', caregiverId: 'u_cg1', startTime: new Date().toISOString(), status: 'scheduled', visitType: 'routine', rate: 800
+    id: 'v_001',
+    patientId: 'pt_01',
+    caregiverId: 'u_cg1',
+    startTime: new Date().toISOString(),
+    status: 'scheduled',
+    visitType: 'routine',
+    rate: 800
   }
 ];
 
-export const vitals: Array<Record<string, string | number>> = [];
+export const vitals: Array<Record<string, string | number | undefined>> = [];
 export const medications: Array<Record<string, unknown>> = [];
 export const messages: Array<Record<string, unknown>> = [];
 export const invoices: Array<Record<string, unknown>> = [];
